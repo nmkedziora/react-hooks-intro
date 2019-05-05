@@ -6,8 +6,24 @@ class App extends React.Component {
 
     this.state = {
       count: 0,
-      isOn: false
+      isOn: false,
+      x: null,
+      y: null,
     };
+  }
+
+  componentDidMount() {
+    document.title = `Current count is: ${this.state.count}`;
+
+    window.addEventListener('mousemove', this.handleMouseMove);
+  }
+
+  componentDidUpdate() {
+    document.title = `Current count is: ${this.state.count}`;
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mousemove', this.handleMouseMove);
   }
 
   incrementCount = () => {
@@ -19,9 +35,16 @@ class App extends React.Component {
 
   toggleLight = () => {
     this.setState(prevState => ({
-      isOn: !prevState.isOn
-    }))
-  }
+      isOn: !prevState.isOn,
+    }));
+  };
+
+  handleMouseMove = event => {
+    this.setState({
+      x: event.pageX,
+      y: event.pageY,
+    });
+  };
 
   render() {
     return (
@@ -36,9 +59,18 @@ class App extends React.Component {
             height: '150px',
             width: '150px',
             background: this.state.isOn ? 'yellowgreen' : 'lightgrey',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '12px',
           }}
           onClick={this.toggleLight}
-        ></div>
+        >click to toggle
+        </div>
+
+        <h2>Mouse position</h2>
+        <p>x: {this.state.x}</p>
+        <p>y: {this.state.y}</p>
       </>
     );
   }

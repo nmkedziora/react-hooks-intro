@@ -1,8 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function App() {
   const [count, setCount] = useState(0);
   const [isOn, setIsOn] = useState(false);
+  const [mousePosition, setMousePosition] = useState({x: null, y: null});
+
+  useEffect(() => {
+    document.title = `I was clicked ${count} times`;
+  },[count]);
+
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+    };
+  },[]);
 
   const incrementCount = () => {
     setCount(prevCount => prevCount + 1);
@@ -10,6 +23,13 @@ export default function App() {
 
   const toggleLight = () => {
     setIsOn(prevIsOn => !prevIsOn);
+  };
+
+   const handleMouseMove = event => {
+    setMousePosition({
+      x: event.pageX,
+      y: event.pageY,
+    });
   };
 
   return (
@@ -28,11 +48,15 @@ export default function App() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          fontSize: '12px'
+          fontSize: '12px',
         }}
         onClick={toggleLight}
       >click to toggle
       </div>
+
+      <h2>Mouse position</h2>
+        <p>x: {mousePosition.x}</p>
+        <p>y: {mousePosition.y}</p>
     </>
   );
 }
