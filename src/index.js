@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 // import App from './App';
 // import App from './AppClass';
 // import App from './Login';
-import App from './Register';
+// import App from './Register';
+import App from './News';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<App />, document.getElementById('root'));
