@@ -16,7 +16,7 @@ function reducer(state, action) {
   }
 }
 
-export default function TodoApp() {
+function Counter() {
   const user = useContext(UserContext);
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
@@ -33,3 +33,5 @@ export default function TodoApp() {
     </>
   );
 }
+
+export default Counter;
