@@ -5,19 +5,19 @@ function todosReducer(state, action) {
   let todo;
   let todos;
   switch (action.type) {
-    case 'ADD_TODO':
-      if(!action.payload) {
-        return state;
-      }
-      if(state.todos.findIndex(todo => todo.text === action.payload) !== -1) {
-        return state;
-      }
-      todo = {
-        id: uuidv4(),
-        text: action.payload,
-        complete: false,
+    case 'FETCH_TODOS':
+      return {
+        ...state,
+        todos: action.payload,
       };
-      todos = [...state.todos, todo];
+    case 'ADD_TODO':
+      // if(!action.payload) {
+      //   return state;
+      // }
+      // if(state.todos.findIndex(todo => todo.text === action.payload) !== -1) {
+      //   return state;
+      // }
+      todos = [...state.todos, action.payload];
 
       return {
         ...state,
@@ -29,10 +29,7 @@ function todosReducer(state, action) {
         current: action.payload,
       };
     case 'TOGGLE_TODO':
-      todos = state.todos.map(todo => todo.id === action.payload.id ? {
-        ...action.payload,
-        complete: !action.payload.complete,
-      } : todo);
+      todos = state.todos.map(todo => todo.id === action.payload.id ? action.payload : todo);
 
       return {
         ...state,
@@ -44,30 +41,30 @@ function todosReducer(state, action) {
       return {
         ...state,
         todos,
-        current: isDeletedTodo
+        current: isDeletedTodo,
       };
     case 'UPDATE_TODO':
-       if(!action.payload) {
-        return state;
-      }
-      if(state.todos.findIndex(todo => todo.text === action.payload) !== -1) {
-        return state;
-      }
-      todo = {...state.current, text: action.payload};
+      // if (!action.payload) {
+      //   return state;
+      // }
+      // if (state.todos.findIndex(todo => todo.text === action.payload) !== -1) {
+      //   return state;
+      // }
+      todo = { ...action.payload };
       const index = state.todos.findIndex(todo => todo.id === state.current.id);
       todos = [
         ...state.todos.slice(0, index),
         todo,
-        ...state.todos.slice(index + 1)
+        ...state.todos.slice(index + 1),
       ];
 
       return {
         ...state,
         todos,
-        current: {}
+        current: {},
       };
     default:
-    return state;
+      return state;
   }
 }
 
